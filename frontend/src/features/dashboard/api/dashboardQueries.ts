@@ -32,7 +32,8 @@ export function useDashboardQuery(startDate?: string, endDate?: string) {
   return useQuery({
     queryKey: queryKeys.dashboard(startDate, endDate),
     queryFn: () => fetchDashboard(startDate, endDate),
-    staleTime: 0 // Her ziyarette taze veri çek
+    staleTime: 0, // Her ziyarette taze veri çek
+    refetchInterval: 10000 // 10 saniyede bir güncelle
   });
 }
 
@@ -40,6 +41,7 @@ export function useUnitReportsQuery(startDate?: string, endDate?: string) {
   return useQuery({
     queryKey: queryKeys.unitReports(startDate, endDate),
     queryFn: () => fetchUnitReports(startDate, endDate),
-    staleTime: 0 // Her ziyarette taze veri çek
+    staleTime: 0, // Her ziyarette taze veri çek
+    refetchInterval: 10000 // 10 saniyede bir güncelle
   });
 }

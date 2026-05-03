@@ -49,7 +49,8 @@ export function useOneriSikayetListQuery(tip?: string) {
   return useQuery({
     queryKey: queryKeys.oneriSikayet(tip),
     queryFn: () => fetchOneriSikayetList(tip),
-    staleTime: 0
+    staleTime: 0,
+    refetchInterval: 10000
   });
 }
 

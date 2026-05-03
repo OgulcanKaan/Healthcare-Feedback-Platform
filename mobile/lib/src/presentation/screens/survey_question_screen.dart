@@ -17,21 +17,20 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
   int? selectedIndex = 1;
 
   final options = const [
-    'Cok Memnun',
+    'Çok Memnun',
     'Memnun',
-    'Kararsiz',
-    'Memnun Degil',
-    'Hic Memnun Degil',
+    'Kararsız',
+    'Memnun Değil',
+    'Hiç Memnun Değil',
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ScreenBackground(
-        child: Padding(
+        child: ListView(
           padding: const EdgeInsets.all(24),
-          child: Column(
-            children: [
+          children: [
               const SizedBox(height: 12),
               Container(
                 width: double.infinity,
@@ -60,10 +59,9 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
                 ),
               ),
               const SizedBox(height: 18),
-              Expanded(
-                child: GlassCard(
-                  child: Column(
-                    children: [
+            GlassCard(
+              child: Column(
+                children: [
                       Container(
                         width: 100,
                         height: 100,
@@ -80,16 +78,17 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
                       ),
                       const SizedBox(height: 18),
                       const Text(
-                        'Hastanemizden aldiginiz hizmeti nasil degerlendirirsiniz?',
+                        'Hastanemizden aldığınız hizmeti nasıl değerlendirirsiniz?',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, height: 1.2),
+                        style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700, height: 1.2),
                       ),
                       const SizedBox(height: 26),
-                      Expanded(
-                        child: ListView.separated(
-                          itemCount: options.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 14),
-                          itemBuilder: (context, index) {
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: options.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 14),
+                        itemBuilder: (context, index) {
                             final selected = selectedIndex == index;
                             return InkWell(
                               borderRadius: BorderRadius.circular(24),
@@ -132,7 +131,6 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
                     ],
                   ),
                 ),
-              ),
               const SizedBox(height: 18),
               Row(
                 children: [
@@ -143,13 +141,13 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 18),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
                       ),
-                      child: const Text('[ Geri ]', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+                      child: const Text('Geri', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
                     ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: GradientButton(
-                      label: '[ Ileri ]',
+                      label: 'İleri',
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (_) => const ThankYouScreen()),
@@ -162,7 +160,6 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
             ],
           ),
         ),
-      ),
     );
   }
 }

@@ -15,6 +15,7 @@ export function useComplaintListQuery() {
   return useQuery({
     queryKey: queryKeys.complaints,
     queryFn: fetchComplaints,
-    staleTime: 1000 * 60 * 2
+    staleTime: 1000 * 60 * 2,
+    refetchInterval: 10000
   });
 }

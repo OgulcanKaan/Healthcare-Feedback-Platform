@@ -52,7 +52,7 @@ export function DashboardPage() {
           </label>
           <button
             type="button"
-            className="action-button-secondary self-end"
+            className="action-button-secondary self-end w-full md:w-auto mt-2 md:mt-0"
             onClick={() =>
               dispatch(
                 setDateRange({
@@ -71,20 +71,20 @@ export function DashboardPage() {
         <MetricCard 
           label="Genel Ortalama" 
           value={Math.round(dashboard?.genelMemnuniyetOrtalamasi ?? 0)} 
-          hint="Canli memnuniyet puani" 
+          hint="Canlı memnuniyet puanı" 
           icon={<Activity size={20} />} 
         />
         <MetricCard
           label="Toplam Cevaplanan Anket"
           value={dashboard?.toplamCevaplananAnket ?? 0}
-          hint="Tamamlanan oturum sayisi"
+          hint="Tamamlanan oturum sayısı"
           accent="from-brand-600 to-mint"
           icon={<CheckCircle size={20} />}
         />
         <MetricCard
-          label="Toplam Sikayet"
+          label="Toplam Şikayet"
           value={dashboard?.toplamSikayetSayisi ?? 0}
-          hint="Dusuk puan nedeniyle olusan kayitlar"
+          hint="Düşük puan nedeniyle oluşan kayıtlar"
           accent="from-night to-brand-500"
           icon={<AlertTriangle size={20} />}
         />
@@ -92,7 +92,7 @@ export function DashboardPage() {
 
       <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
         <SectionCard
-          title="Birim Bazli Dagilim"
+          title="Birim Bazlı Dağılım"
           subtitle="Recharts ile cache destekli query katmanından beslenen birim performans grafiği."
           actions={
             <Link to="/birim-raporu" className="action-button-secondary">
@@ -113,7 +113,7 @@ export function DashboardPage() {
           </div>
         </SectionCard>
 
-        <SectionCard title="Dusuk Puanli Oturumlar" subtitle="Complaint feature query katmanından son kayıtlar.">
+        <SectionCard title="Düşük Puanlı Oturumlar" subtitle="Complaint feature query katmanından son kayıtlar.">
           <div className="space-y-3 max-h-[360px] overflow-y-auto custom-scrollbar pr-3">
             {complaints.length === 0 ? (
               <div className="rounded-[24px] border border-dashed border-brand-200 bg-white/50 p-6 text-center text-sm text-slateglass/60">
@@ -134,7 +134,7 @@ export function DashboardPage() {
         </SectionCard>
       </div>
 
-      <SectionCard title="Hizli Ozet" subtitle="Referans dashboard görselindeki sade yatay listedeki his korunur.">
+      <SectionCard title="Hızlı Özet" subtitle="Referans dashboard görselindeki sade yatay listedeki his korunur.">
         <div className="space-y-4 max-h-[360px] overflow-y-auto custom-scrollbar pr-3">
           {unitReports.map((item) => (
             <div key={item.birimAdi}>

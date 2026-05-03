@@ -42,7 +42,7 @@ export function ComplaintListPage() {
   return (
     <div className="space-y-4">
       {/* Tab seçimi */}
-      <div className="glass-panel flex gap-2 p-3">
+      <div className="glass-panel flex flex-col sm:flex-row gap-2 p-3">
         <button
           type="button"
           onClick={() => setAktifTab("otomatik")}
@@ -121,7 +121,7 @@ export function ComplaintListPage() {
           title="Öneri & Şikayetler"
           subtitle="Hastalar ve ziyaretçiler tarafından anket sonrasında manuel olarak iletilen kayıtlar."
           actions={
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2 mt-2 md:mt-0">
               {(["hepsi", "Sikayet", "Oneri"] as const).map((t) => (
                 <button
                   key={t}

@@ -23,26 +23,26 @@ class _KvkkScreenState extends State<KvkkScreen> {
           padding: const EdgeInsets.all(24),
           children: [
             const SizedBox(height: 16),
-            const Text('KVKK Onayi', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800)),
+            const Text('KVKK Onayı', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800)),
             const SizedBox(height: 24),
             GlassCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Kisisel verileriniz yalnizca hizmet memnuniyetini iyilestirmek amaciyla islenir. Onay verdikten sonra anket ekranina gecilir.',
+                    'Kişisel verileriniz yalnızca hizmet memnuniyetini iyileştirmek amacıyla işlenir. Onay verdikten sonra anket ekranına geçilir.',
                     style: TextStyle(fontSize: 16, height: 1.6, color: Color(0xFF5E7283)),
                   ),
                   const SizedBox(height: 18),
                   CheckboxListTile(
                     value: accepted,
                     contentPadding: EdgeInsets.zero,
-                    title: const Text('KVKK metnini okudum ve onayliyorum.'),
+                    title: const Text('KVKK metnini okudum ve onaylıyorum.'),
                     onChanged: (value) => setState(() => accepted = value ?? false),
                   ),
                   const SizedBox(height: 12),
                   GradientButton(
-                    label: 'Ankete Gec',
+                    label: 'Ankete Geç',
                     onPressed: accepted
                         ? () {
                             Navigator.of(context).push(

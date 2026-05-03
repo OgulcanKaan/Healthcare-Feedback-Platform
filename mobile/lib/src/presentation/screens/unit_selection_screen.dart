@@ -18,7 +18,7 @@ class UnitSelectionScreen extends StatelessWidget {
           padding: const EdgeInsets.all(24),
           children: [
             const SizedBox(height: 16),
-            const Text('Birim Secimi', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800)),
+            const Text('Birim Seçimi', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800)),
             const SizedBox(height: 24),
             ...birimler.map(
               (birim) => Padding(
@@ -43,7 +43,7 @@ class UnitSelectionScreen extends StatelessWidget {
                         ),
                       ),
                       GradientButton(
-                        label: 'Sec',
+                        label: 'Seç',
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(builder: (_) => const KvkkScreen()),
