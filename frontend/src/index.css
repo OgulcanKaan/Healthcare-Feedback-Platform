@@ -10,6 +10,11 @@
   font-family: "Aptos", "Segoe UI", Tahoma, sans-serif;
 }
 
+.dark {
+  color: #dbeafe;
+  background: #020617;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -22,6 +27,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  line-height: 1.5;
 }
 
 body,
@@ -44,11 +50,11 @@ textarea {
 
 @layer components {
   .glass-panel {
-    @apply rounded-[28px] border border-white/70 bg-white/70 shadow-glass backdrop-blur-xl;
+    @apply rounded-xl border border-white/70 bg-white/70 shadow-glass backdrop-blur-xl dark:border-slate-700/80 dark:bg-slate-900/80 dark:shadow-none;
   }
 
   .glass-input {
-    @apply w-full rounded-2xl border border-brand-100 bg-white/75 px-4 py-3 text-slateglass outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100;
+    @apply w-full rounded-xl border border-brand-100 bg-white/75 px-4 py-3 text-slateglass outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100 dark:border-slate-700 dark:bg-slate-950/70 dark:text-slate-100 dark:focus:ring-slate-700;
   }
 
   .action-button {
@@ -56,11 +62,32 @@ textarea {
   }
 
   .action-button-primary {
-    @apply action-button bg-gradient-to-r from-brand-500 to-brand-300 text-white shadow-soft hover:translate-y-[-1px];
+    @apply action-button bg-gradient-to-r from-brand-500 to-brand-300 text-white shadow-soft hover:translate-y-[-1px] dark:shadow-none;
   }
 
   .action-button-secondary {
-    @apply action-button border border-brand-100 bg-white/80 text-slateglass hover:bg-white;
+    @apply action-button border border-brand-100 bg-white/80 text-slateglass hover:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800;
+  }
+
+  .table-shell {
+    @apply overflow-hidden rounded-xl border border-brand-100 dark:border-slate-700;
+  }
+
+  .data-table {
+    @apply w-full bg-white/80 text-left text-sm dark:bg-slate-900/80;
+  }
+
+  .data-table thead {
+    @apply sticky top-0 z-10 bg-brand-50 text-slateglass/75 shadow-sm dark:bg-slate-800 dark:text-slate-200;
+  }
+
+  .data-table th,
+  .data-table td {
+    @apply px-5 py-4;
+  }
+
+  .data-table tbody tr {
+    @apply border-t border-brand-50 transition-colors hover:bg-white dark:border-slate-800 dark:hover:bg-slate-800/70;
   }
 }
 

@@ -40,7 +40,9 @@ export function useSubmitOneriSikayetCommand() {
   return useMutation({
     mutationFn: submitOneriSikayet,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.oneriSikayet() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.oneriSikayetRoot });
+      queryClient.invalidateQueries({ queryKey: queryKeys.complaints });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     }
   });
 }
@@ -59,7 +61,9 @@ export function useUpdateDurumCommand() {
   return useMutation({
     mutationFn: updateDurum,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.oneriSikayet() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.oneriSikayetRoot });
+      queryClient.invalidateQueries({ queryKey: queryKeys.complaints });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     }
   });
 }

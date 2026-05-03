@@ -2,6 +2,7 @@
 node_modules/
 dist/
 .env
+*.tsbuildinfo
 
 # .NET
 bin/

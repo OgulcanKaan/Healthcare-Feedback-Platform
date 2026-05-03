@@ -1,5 +1,7 @@
+using HastaAnketi.API.Common.Caching;
 using HastaAnketi.API.Data;
 using HastaAnketi.API.DTOs;
+using HastaAnketi.API.Interfaces;
 using HastaAnketi.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,16 +12,23 @@ namespace HastaAnketi.API.Controllers
     [ApiController]
     public class OneriSikayetController : ControllerBase
     {
+        private readonly ICacheService _cacheService;
+
+        public OneriSikayetController(ICacheService cacheService)
+        {
+            _cacheService = cacheService;
+        }
+
         /// <summary>
-        /// Hasta veya ziyaretçi tarafından gönderilen öneri/şikayet.
-        /// BirimId yoksa 1 (Acil) varsayılan kullanılır.
+        /// Hasta veya ziyaretci tarafindan gonderilen oneri/sikayet.
+        /// BirimId yoksa ilk aktif birim varsayilan kullanilir.
         /// </summary>
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult Gonder([FromBody] OneriSikayetRequest request)
+        public async Task<IActionResult> Gonder([FromBody] OneriSikayetRequest request, CancellationToken cancellationToken)
         {
             if (request == null || string.IsNullOrWhiteSpace(request.Mesaj))
-                return BadRequest(new { mesaj = "Mesaj alanı boş olamaz." });
+                return BadRequest(new { mesaj = "Mesaj alani bos olamaz." });
 
             if (request.Mesaj.Length > 1000)
                 return BadRequest(new { mesaj = "Mesaj en fazla 1000 karakter olabilir." });
@@ -31,25 +40,22 @@ namespace HastaAnketi.API.Controllers
                 _ => "Sikayet"
             };
 
-            // Geçerli birimId yoksa 1 kullan
             var birimId = InMemoryStore.Birimler.Any(b => b.Id == request.BirimId)
                 ? request.BirimId
                 : (InMemoryStore.Birimler.FirstOrDefault()?.Id ?? 1);
 
             var birim = InMemoryStore.Birimler.First(b => b.Id == birimId);
 
-            // Oturum zorunlu değil — oturumId 0 ise boş oturum nesnesi oluştur
             AnketOturumu oturum;
             if (request.OturumId > 0)
             {
                 var mevcutOturum = InMemoryStore.Oturumlar.FirstOrDefault(o => o.Id == request.OturumId);
                 if (mevcutOturum == null)
-                    return BadRequest(new { mesaj = "Belirtilen oturum bulunamadı." });
+                    return BadRequest(new { mesaj = "Belirtilen oturum bulunamadi." });
                 oturum = mevcutOturum;
             }
             else
             {
-                // Standalone öneri/şikayet — oturuma bağlı değil
                 oturum = new AnketOturumu
                 {
                     Id = 0,
@@ -76,18 +82,19 @@ namespace HastaAnketi.API.Controllers
             };
 
             InMemoryStore.Sikayetler.Add(kayit);
+            await _cacheService.RemoveByPrefixAsync(CacheKeys.RaporPrefix, cancellationToken);
 
             return Ok(new
             {
                 mesaj = tip == "Oneri"
-                    ? "Öneriniz alındı. Teşekkür ederiz."
-                    : "Şikayetiniz alındı. En kısa sürede inceleme yapılacaktır.",
+                    ? "Oneriniz alindi. Tesekkur ederiz."
+                    : "Sikayetiniz alindi. En kisa surede inceleme yapilacaktir.",
                 id = kayit.Id
             });
         }
 
         /// <summary>
-        /// Admin: Tüm öneri ve şikayetleri listele (Tip ve Durum filtrelemeli).
+        /// Admin: Tum oneri ve sikayetleri listele (Tip ve Durum filtrelemeli).
         /// </summary>
         [HttpGet]
         [Authorize]
@@ -119,22 +126,23 @@ namespace HastaAnketi.API.Controllers
         }
 
         /// <summary>
-        /// Admin: Kaydın durumunu güncelle (Acik → Inceleniyor → Kapandi).
+        /// Admin: Kaydin durumunu guncelle (Acik -> Inceleniyor -> Kapandi).
         /// </summary>
         [HttpPatch("{id:int}/durum")]
         [Authorize]
-        public IActionResult DurumGuncelle(int id, [FromBody] DurumGuncelleRequest request)
+        public async Task<IActionResult> DurumGuncelle(int id, [FromBody] DurumGuncelleRequest request, CancellationToken cancellationToken)
         {
             var kayit = InMemoryStore.Sikayetler.FirstOrDefault(s => s.Id == id);
             if (kayit == null)
-                return NotFound(new { mesaj = "Kayıt bulunamadı." });
+                return NotFound(new { mesaj = "Kayit bulunamadi." });
 
             var gecerliDurumlar = new[] { "Acik", "Inceleniyor", "Kapandi" };
             if (!gecerliDurumlar.Contains(request.Durum))
-                return BadRequest(new { mesaj = "Geçersiz durum değeri." });
+                return BadRequest(new { mesaj = "Gecersiz durum degeri." });
 
             kayit.Durum = request.Durum;
-            return Ok(new { mesaj = "Durum güncellendi.", id = kayit.Id, durum = kayit.Durum });
+            await _cacheService.RemoveByPrefixAsync(CacheKeys.RaporPrefix, cancellationToken);
+            return Ok(new { mesaj = "Durum guncellendi.", id = kayit.Id, durum = kayit.Durum });
         }
     }
 
@@ -145,7 +153,7 @@ namespace HastaAnketi.API.Controllers
         public string Mesaj { get; set; } = string.Empty;
         public string? GonderenAd { get; set; }
         public int BirimId { get; set; } = 1;
-        /// <summary>Anket oturumundan geliyorsa OturumId; bağımsız gönderimde 0</summary>
+        /// <summary>Anket oturumundan geliyorsa OturumId; bagimsiz gonderimde 0</summary>
         public int OturumId { get; set; } = 0;
     }
 

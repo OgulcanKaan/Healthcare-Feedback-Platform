@@ -5,6 +5,7 @@ export const queryKeys = {
   dashboard: (startDate?: string, endDate?: string) => ["dashboard", startDate ?? "all", endDate ?? "all"] as const,
   unitReports: (startDate?: string, endDate?: string) => ["unit-reports", startDate ?? "all", endDate ?? "all"] as const,
   complaints: ["complaints"] as const,
+  oneriSikayetRoot: ["oneri-sikayet"] as const,
   oneriSikayet: (tip?: string) => ["oneri-sikayet", tip ?? "all"] as const,
   users: ["users"] as const,
   logs: ["logs"] as const,
